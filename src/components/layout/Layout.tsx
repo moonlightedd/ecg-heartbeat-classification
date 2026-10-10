@@ -20,7 +20,7 @@ export function Layout({ children, onMenuClick, pageTitle, pageBreadcrumb }: Lay
         >
           <Menu className="w-5 h-5 text-navy-700" />
         </button>
-        <span className="text-sm font-semibold text-navy-800">{pageTitle}</span>
+        <span className="text-sm font-semibold text-navy-800">Health Classifier Dashboard</span>
         <div className="w-9" />
       </div>
 
