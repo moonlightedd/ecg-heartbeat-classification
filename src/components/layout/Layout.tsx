@@ -29,7 +29,7 @@ export function Layout({ children, onMenuClick, pageTitle, pageBreadcrumb }: Lay
       Heartbeat Classifier
     </p>
     <p className="text-[10px] text-slate-400 leading-tight mt-0.5">
-      ECG ML Screening Demo
+      ECG ML Screening 
     </p>
   </div>
 </div>
