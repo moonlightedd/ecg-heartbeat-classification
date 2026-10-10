@@ -33,7 +33,7 @@ export function Layout({ children, onMenuClick, pageTitle, pageBreadcrumb }: Lay
               <p className="text-xs font-medium text-teal-600 uppercase tracking-wider mb-1">
                 {pageBreadcrumb}
               </p>
-              <h2 className="text-2xl lg:text-3xl font-bold text-navy-800">{pageTitle}</h2>
+              <h2 className="text-2xl lg:text-3xl font-bold text-navy-800">ECG +</h2>
             </div>
 
             {children}
