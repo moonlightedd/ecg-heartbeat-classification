@@ -44,7 +44,7 @@ export function Sidebar({ currentPage, onNavigate, isOpen, onClose }: SidebarPro
             </div>
             <div>
               <h1 className="text-sm font-bold text-navy-800 leading-tight">Heartbeat Classifier</h1>
-              <p className="text-xs text-slate-400 leading-tight mt-0.5">ECG ML Screening Demo</p>
+              <p className="text-xs text-slate-400 leading-tight mt-0.5">ECG ML Screening </p>
             </div>
           </div>
         </div>
