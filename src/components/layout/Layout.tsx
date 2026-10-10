@@ -1,4 +1,4 @@
-import { Menu } from 'lucide-react';
+import { Menu, HeartPulse } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 interface LayoutProps {
@@ -20,7 +20,19 @@ export function Layout({ children, onMenuClick, pageTitle, pageBreadcrumb }: Lay
         >
           <Menu className="w-5 h-5 text-navy-700" />
         </button>
-        <span className="text-sm font-semibold text-navy-800">Health Classifier Dashboard</span>
+        <div className="flex min-w-0 items-center gap-2">
+  <div className="w-9 h-9 rounded-lg bg-navy-700 flex items-center justify-center shrink-0">
+    <HeartPulse className="w-5 h-5 text-teal-400" />
+  </div>
+  <div className="min-w-0">
+    <p className="text-xs font-bold text-navy-800 leading-tight">
+      Heartbeat Classifier
+    </p>
+    <p className="text-[10px] text-slate-400 leading-tight mt-0.5">
+      ECG ML Screening Demo
+    </p>
+  </div>
+</div>
         <div className="w-9" />
       </div>
 
