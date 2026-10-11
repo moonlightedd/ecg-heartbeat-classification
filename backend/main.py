@@ -42,14 +42,13 @@ app.add_middleware(
 )
 
 try:
-    # Only load pickle files you trust. This file was supplied by the project owner.
     with warnings.catch_warnings():
-    warnings.simplefilter("default")
-    with gzip.open(MODEL_PATH, "rb") as model_file:
-        model = joblib.load(model_file)
+        warnings.simplefilter("default")
+        with gzip.open(MODEL_PATH, "rb") as model_file:
+            model = joblib.load(model_file)
 except Exception as exc:
     raise RuntimeError(f"Could not load model at {MODEL_PATH}: {exc}") from exc
-
+    
 if getattr(model, "n_features_in_", None) != 187:
     raise RuntimeError(
         f"Expected a model trained on 187 features; got {getattr(model, 'n_features_in_', None)}."
