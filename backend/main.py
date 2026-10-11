@@ -1,5 +1,6 @@
 import os
 import warnings
+import gzip
 from pathlib import Path
 from typing import List
 
@@ -10,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 BASE_DIR = Path(__file__).resolve().parent
-MODEL_PATH = BASE_DIR / "ecg_random_forest.pkl"
+MODEL_PATH = BASE_DIR / "ecg_random_forest.pkl.gz"
 
 # Dataset class mapping commonly used for this ECG heartbeat dataset.
 # Verify against the dataset documentation before academic submission.
@@ -43,8 +44,9 @@ app.add_middleware(
 try:
     # Only load pickle files you trust. This file was supplied by the project owner.
     with warnings.catch_warnings():
-        warnings.simplefilter("default")
-        model = joblib.load(MODEL_PATH)
+    warnings.simplefilter("default")
+    with gzip.open(MODEL_PATH, "rb") as model_file:
+        model = joblib.load(model_file)
 except Exception as exc:
     raise RuntimeError(f"Could not load model at {MODEL_PATH}: {exc}") from exc
 
