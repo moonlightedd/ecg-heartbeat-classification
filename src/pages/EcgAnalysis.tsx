@@ -379,6 +379,37 @@ export function EcgAnalysis({}: EcgAnalysisProps) {
                 />
                 <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3">
                   <p className="text-sm font-semibold text-amber-900">
+                    
+                <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <div className="rounded-xl border border-blue-200 bg-blue-50 p-3">
+                    <p className="font-semibold text-blue-800">P Wave</p>
+                    <p className="mt-1 text-sm text-blue-700">
+                      Represents atrial depolarization.
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl border border-red-200 bg-red-50 p-3">
+                    <p className="font-semibold text-red-800">QRS Complex</p>
+                    <p className="mt-1 text-sm text-red-700">
+                      Represents ventricular depolarization. It includes Q, R and S.
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl border border-purple-200 bg-purple-50 p-3">
+                    <p className="font-semibold text-purple-800">T Wave</p>
+                    <p className="mt-1 text-sm text-purple-700">
+                      Represents ventricular repolarization.
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl border border-teal-200 bg-teal-50 p-3">
+                    <p className="font-semibold text-teal-800">R–R Interval</p>
+                    <p className="mt-1 text-sm text-teal-700">
+                      Time between consecutive R peaks. Requires a continuous ECG signal for reliable calculation.
+                    </p>
+                  </div>
+                </div>
+
                     ECG Waveform Markers
                   </p>
                   <p className="mt-1 text-xs text-amber-800">
