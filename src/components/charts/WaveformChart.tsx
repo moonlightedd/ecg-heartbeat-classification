@@ -214,6 +214,31 @@ export function WaveformChart({
           className={animate ? 'animate-draw-line' : ''}
           style={animate ? { strokeDasharray: '2000' } : undefined}
         />
+        
+        {/* Estimated QRS complex region */}
+        {showLandmarks &&
+          (() => {
+            const qPoint = landmarks.find((point) => point.label === 'Q*');
+            const sPoint = landmarks.find((point) => point.label === 'S*');
+
+            if (!qPoint || !sPoint || sPoint.x <= qPoint.x) return null;
+
+            return (
+              <rect
+                x={qPoint.x}
+                y={padding.top}
+                width={sPoint.x - qPoint.x}
+                height={height - padding.top - padding.bottom}
+                fill="#ef4444"
+                fillOpacity="0.10"
+                stroke="#dc2626"
+                strokeDasharray="4 3"
+                strokeWidth="1"
+                rx="4"
+              />
+            );
+          })()}
+
 {/* Estimated P, Q, R, S and T landmarks */}
 {showLandmarks &&
   landmarks.map((point, index) => (
