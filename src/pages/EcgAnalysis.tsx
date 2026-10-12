@@ -377,9 +377,17 @@ export function EcgAnalysis({}: EcgAnalysisProps) {
                   height={240}
                   label={`row-${selectedRow}`}
                 />
+               
                 <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3">
                   <p className="text-sm font-semibold text-amber-900">
-                    
+                    ECG Waveform Markers
+                  </p>
+                  <p className="mt-1 text-xs text-amber-800">
+                    P*, Q*, R*, S* and T* are estimated waveform markers
+                    for visualization only and are not clinically validated.
+                  </p>
+                </div>
+
                 <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div className="rounded-xl border border-blue-200 bg-blue-50 p-3">
                     <p className="font-semibold text-blue-800">P Wave</p>
@@ -408,14 +416,6 @@ export function EcgAnalysis({}: EcgAnalysisProps) {
                       Time between consecutive R peaks. Requires a continuous ECG signal for reliable calculation.
                     </p>
                   </div>
-                </div>
-
-                    ECG Waveform Markers
-                  </p>
-                  <p className="mt-1 text-xs text-amber-800">
-                    P*, Q*, R*, S* and T* are estimated waveform markers
-                    for visualization only and are not clinically validated.
-                  </p>
                 </div>
 
                 <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4">
