@@ -7,6 +7,7 @@ interface WaveformChartProps {
   animate?: boolean;
   height?: number;
   label?: string;
+  showLandmarks?: boolean;
 }
 
 // Renders an ECG waveform as a responsive SVG path.
@@ -18,6 +19,7 @@ export function WaveformChart({
   animate = false,
   height = 200,
   label,
+  showLandmarks = true,
 }: WaveformChartProps) {
   const width = 800;
   const padding = { top: 20, right: 16, bottom: 28, left: 48 };
@@ -56,7 +58,52 @@ export function WaveformChart({
 
     return { pathD: path, areaD: area, minVal: min, maxVal: max, gridLines: grid };
   }, [data, height]);
+  const landmarks = useMemo(() => {
+    if (data.length < 20) return [];
 
+    const min = Math.min(...data);
+    const max = Math.max(...data);
+    const range = max - min || 1;
+    const chartW = width - padding.left - padding.right;
+    const chartH = height - padding.top - padding.bottom;
+    const rIndex = data.indexOf(max);
+    const n = data.length;
+
+    const findExtreme = (
+      start: number,
+      end: number,
+      type: 'min' | 'max'
+    ) => {
+      const from = Math.max(0, Math.floor(start));
+      const to = Math.min(n - 1, Math.floor(end));
+      let best = from;
+
+      for (let i = from + 1; i <= to; i++) {
+        if (
+          type === 'max'
+            ? data[i] > data[best]
+            : data[i] < data[best]
+        ) {
+          best = i;
+        }
+      }
+
+      return best;
+    };
+
+    return [
+      { label: 'P*', index: findExtreme(rIndex - n * 0.35, rIndex - n * 0.12, 'max'), color: '#2563eb' },
+      { label: 'Q*', index: findExtreme(rIndex - n * 0.04, rIndex, 'min'), color: '#dc2626' },
+      { label: 'R*', index: rIndex, color: '#dc2626' },
+      { label: 'S*', index: findExtreme(rIndex, rIndex + n * 0.06, 'min'), color: '#dc2626' },
+      { label: 'T*', index: findExtreme(rIndex + n * 0.08, rIndex + n * 0.35, 'max'), color: '#7c3aed' },
+    ].map((point) => ({
+      ...point,
+      x: padding.left + (point.index / (n - 1)) * chartW,
+      y: padding.top + chartH -
+        ((data[point.index] - min) / range) * chartH,
+    }));
+  }, [data, height]);
   if (data.length === 0) {
     return (
       <div
@@ -127,7 +174,30 @@ export function WaveformChart({
           className={animate ? 'animate-draw-line' : ''}
           style={animate ? { strokeDasharray: '2000' } : undefined}
         />
-
+{/* Estimated P, Q, R, S and T landmarks */}
+{showLandmarks &&
+  landmarks.map((point, index) => (
+    <g key={`${point.label}-${index}`}>
+      <circle
+        cx={point.x}
+        cy={point.y}
+        r="4"
+        fill={point.color}
+        stroke="#ffffff"
+        strokeWidth="1.5"
+      />
+      <text
+        x={point.x}
+        y={Math.max(12, point.y - 10)}
+        textAnchor="middle"
+        fontSize="13"
+        fontWeight="bold"
+        fill={point.color}
+      >
+        {point.label}
+      </text>
+    </g>
+  ))}
         {/* X-axis label */}
         <text
           x={width / 2}
