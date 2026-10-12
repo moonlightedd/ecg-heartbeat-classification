@@ -473,6 +473,9 @@ export function EcgAnalysis({}: EcgAnalysisProps) {
                           <Badge variant="navy" size="sm">
                             {formatPercent(predictions.results[selectedRow].confidence! * 100, 1)}
                           </Badge>
+                          <p className="text-xs text-slate-500">
+  Model probability estimate; not calibrated clinical certainty.
+</p>
                         </div>
                       )}
                     </div>
