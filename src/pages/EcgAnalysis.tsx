@@ -377,6 +377,27 @@ export function EcgAnalysis({}: EcgAnalysisProps) {
                   height={240}
                   label={`row-${selectedRow}`}
                 />
+                <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4">
+  <div className="flex items-center gap-2">
+    <Activity className="h-5 w-5 text-teal-600" />
+    <h3 className="font-semibold text-navy-800">
+      R–R Interval Analysis
+    </h3>
+  </div>
+
+  <p className="mt-2 text-sm text-slate-600">
+    Time between two consecutive R peaks.
+  </p>
+
+  <p className="mt-3 text-2xl font-bold text-navy-800">
+    — ms
+  </p>
+
+  <p className="mt-1 text-xs text-slate-500">
+    A continuous ECG signal with two detectable R peaks
+    is required to calculate the interval.
+  </p>
+</div>
                 {/* Prediction for current row (only if predictions exist) */}
                 {predictions && predictions.results[selectedRow] && (
                   <div className="mt-5 rounded-xl bg-slate-50 border border-slate-100 p-4 animate-fade-in">
