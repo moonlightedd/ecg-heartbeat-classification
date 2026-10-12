@@ -58,7 +58,8 @@ export function WaveformChart({
 
     return { pathD: path, areaD: area, minVal: min, maxVal: max, gridLines: grid };
   }, [data, height]);
-   const landmarks = useMemo(() => {
+  
+  const landmarks = useMemo(() => {
     const n = data.length;
 
     if (n < 20) return [];
@@ -73,8 +74,7 @@ export function WaveformChart({
     // Estimate the dominant positive peak.
     const rIndex = data.indexOf(max);
 
-    // Avoid drawing all labels when the peak is too close
-    // to either edge of the signal.
+    // Do not show estimated markers if the peak is near an edge.
     if (rIndex < n * 0.35 || rIndex > n * 0.65) {
       return [];
     }
@@ -107,11 +107,7 @@ export function WaveformChart({
     const candidates = [
       {
         label: 'P*',
-        index: findExtreme(
-          rIndex - n * 0.35,
-          rIndex - n * 0.12,
-          'max'
-        ),
+        index: findExtreme(rIndex - n * 0.35, rIndex - n * 0.12, 'max'),
         color: '#2563eb',
       },
       {
@@ -131,11 +127,7 @@ export function WaveformChart({
       },
       {
         label: 'T*',
-        index: findExtreme(
-          rIndex + n * 0.08,
-          rIndex + n * 0.35,
-          'max'
-        ),
+        index: findExtreme(rIndex + n * 0.08, rIndex + n * 0.35, 'max'),
         color: '#7c3aed',
       },
     ];
@@ -151,6 +143,7 @@ export function WaveformChart({
           ((data[point.index] - min) / range) * chartH,
       }));
   }, [data, height]);
+
   if (data.length === 0) {
     return (
       <div
