@@ -58,24 +58,37 @@ export function WaveformChart({
 
     return { pathD: path, areaD: area, minVal: min, maxVal: max, gridLines: grid };
   }, [data, height]);
-  const landmarks = useMemo(() => {
-    if (data.length < 20) return [];
+   const landmarks = useMemo(() => {
+    const n = data.length;
+
+    if (n < 20) return [];
 
     const min = Math.min(...data);
     const max = Math.max(...data);
     const range = max - min || 1;
+
     const chartW = width - padding.left - padding.right;
     const chartH = height - padding.top - padding.bottom;
+
+    // Estimate the dominant positive peak.
     const rIndex = data.indexOf(max);
-    const n = data.length;
+
+    // Avoid drawing all labels when the peak is too close
+    // to either edge of the signal.
+    if (rIndex < n * 0.35 || rIndex > n * 0.65) {
+      return [];
+    }
 
     const findExtreme = (
       start: number,
       end: number,
       type: 'min' | 'max'
-    ) => {
-      const from = Math.max(0, Math.floor(start));
+    ): number => {
+      const from = Math.max(0, Math.ceil(start));
       const to = Math.min(n - 1, Math.floor(end));
+
+      if (from > to) return -1;
+
       let best = from;
 
       for (let i = from + 1; i <= to; i++) {
@@ -91,18 +104,52 @@ export function WaveformChart({
       return best;
     };
 
-    return [
-      { label: 'P*', index: findExtreme(rIndex - n * 0.35, rIndex - n * 0.12, 'max'), color: '#2563eb' },
-      { label: 'Q*', index: findExtreme(rIndex - n * 0.04, rIndex, 'min'), color: '#dc2626' },
-      { label: 'R*', index: rIndex, color: '#dc2626' },
-      { label: 'S*', index: findExtreme(rIndex, rIndex + n * 0.06, 'min'), color: '#dc2626' },
-      { label: 'T*', index: findExtreme(rIndex + n * 0.08, rIndex + n * 0.35, 'max'), color: '#7c3aed' },
-    ].map((point) => ({
-      ...point,
-      x: padding.left + (point.index / (n - 1)) * chartW,
-      y: padding.top + chartH -
-        ((data[point.index] - min) / range) * chartH,
-    }));
+    const candidates = [
+      {
+        label: 'P*',
+        index: findExtreme(
+          rIndex - n * 0.35,
+          rIndex - n * 0.12,
+          'max'
+        ),
+        color: '#2563eb',
+      },
+      {
+        label: 'Q*',
+        index: findExtreme(rIndex - n * 0.04, rIndex - 1, 'min'),
+        color: '#dc2626',
+      },
+      {
+        label: 'R*',
+        index: rIndex,
+        color: '#dc2626',
+      },
+      {
+        label: 'S*',
+        index: findExtreme(rIndex + 1, rIndex + n * 0.06, 'min'),
+        color: '#dc2626',
+      },
+      {
+        label: 'T*',
+        index: findExtreme(
+          rIndex + n * 0.08,
+          rIndex + n * 0.35,
+          'max'
+        ),
+        color: '#7c3aed',
+      },
+    ];
+
+    return candidates
+      .filter((point) => point.index >= 0)
+      .map((point) => ({
+        ...point,
+        x: padding.left + (point.index / (n - 1)) * chartW,
+        y:
+          padding.top +
+          chartH -
+          ((data[point.index] - min) / range) * chartH,
+      }));
   }, [data, height]);
   if (data.length === 0) {
     return (
